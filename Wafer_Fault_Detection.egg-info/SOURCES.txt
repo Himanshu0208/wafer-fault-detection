@@ -1,0 +1,8 @@
+README.md
+setup.py
+Wafer_Fault_Detection.egg-info/PKG-INFO
+Wafer_Fault_Detection.egg-info/SOURCES.txt
+Wafer_Fault_Detection.egg-info/dependency_links.txt
+Wafer_Fault_Detection.egg-info/requires.txt
+Wafer_Fault_Detection.egg-info/top_level.txt
+src/__init__.py
