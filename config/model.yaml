@@ -1,0 +1,70 @@
+model_selection :
+  model :
+    GradientBoostingClassifier :
+      search_param_grid :
+        learning_rate :
+          - 1
+          - 0.1
+          - 0.01
+
+        n_estimmators :
+          - 100
+          - 200
+
+        criterion :
+          - friedman_mse
+
+    RandomForestClassifier :
+      search_param_grid :
+        n_estimmators :
+          - 100
+          - 200        
+        
+
+          - 50
+
+        max_depth :
+          - none
+          - 5
+          - 10
+
+        min_sample_leaf :
+          - 1
+          - 2
+          - 4
+        
+        min_sample_split :
+          - 2
+          - 5 
+          - 10
+
+    SVC :
+      search_param_grid :
+        C :
+          - 10
+          - 1
+          - 0.1
+        
+        kernel :
+          - rbf
+          - linear
+        
+        gamma :
+          - 0.1
+          - 0.01
+          - 0.001
+
+    LGBMClassifier :
+      search_params_grid :
+        learning_rate :
+          - 0.1
+          - 0.01
+        
+        boosting_type :
+          - dart
+          - gbdt
+
+        num_leaves :
+          - 50
+          - 20
+          - 30
