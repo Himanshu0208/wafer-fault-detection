@@ -1,7 +1,7 @@
 import os
 
 MONGO_DB_NAME = "waferfault"
-MONGO_COLLECTION_NAME = "sensor"
+MONGO_COLLECTION_NAME = "sensor_data"
 
 TARGET_COLUMN = "quality"
 MONGO_URI = "mongodb+srv://himanshupandey1036:kHia1RHFwJIMMjDX@cluster0.z0nfsde.mongodb.net/?retryWrites=true&w=majority"

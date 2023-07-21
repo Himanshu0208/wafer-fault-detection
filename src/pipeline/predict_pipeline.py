@@ -23,6 +23,7 @@ class PredictionPipelineConfig:
 
     model_file_path = os.path.join(
         ARTIFACT_FOLDER,
+        f"{MODEL_FILE_NAME}",
         f"{MODEL_FILE_NAME}{MODEL_FILE_EXTENSION}"
     )
     preprocessor_file_path = os.path.join(
@@ -70,7 +71,7 @@ class PredictionPipeline:
         except Exception as e:
             raise CustomException(e, sys)
 
-    def predicted(self, features: pd.DataFrame) -> np.array:
+    def predict(self, features: pd.DataFrame) -> np.array:
         try:
             model: object = self.utils.load_obj(
                 file_path=self.prediction_pipeline_config.model_file_path
@@ -114,10 +115,13 @@ class PredictionPipeline:
 
             input_dataframe[prediction_column_name] = input_dataframe[prediction_column_name].map(
                 target_column_mapping
-                )
-            
-            os.makedirs(name=self.prediction_pipeline_config.prediction_output_dirname)
-            input_dataframe.to_csv(self.prediction_pipeline_config.prediction_file_path)
+            )
+
+            os.makedirs(
+                name=self.prediction_pipeline_config.prediction_output_dirname,
+                exist_ok=True)
+            input_dataframe.to_csv(
+                self.prediction_pipeline_config.prediction_file_path)
             logging.info("Prediction completed")
 
         except Exception as e:

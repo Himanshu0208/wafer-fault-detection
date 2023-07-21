@@ -49,7 +49,7 @@ class TrainingPipeline:
     def run_pipeline(self) -> None:
         try:
             feature_store_file_path = self.start_data_ingestion()
-            train_arr, test_arr = self.start_data_transformation(
+            train_arr, test_arr, preprocessor_path = self.start_data_transformation(
                 feature_store_file_path
             )
             accuracy = self.start_model_training(

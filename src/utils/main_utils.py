@@ -14,33 +14,34 @@ class MainUtils:
     def __init__(self) -> None:
         pass
 
-    def read_yaml_file(self, file_path : str) -> dict :
-        try :
+    def read_yaml_file(self, file_path: str) -> dict:
+        try:
             with open(file=file_path, mode="rb") as yaml_file:
                 return yaml.safe_load(yaml_file)
-            
+
         except Exception as e:
             raise CustomException(e, sys)
 
     @staticmethod
-    def save_object(file_path: str, object_to_save: object) -> None :
+    def save_object(file_path: str, object_to_save: object) -> None:
         logging.info("Entered save_object method of the MainUtils class")
-        try :
-            with open(file_path , 'wb') as file_obj:
-                pickle.dump(obj=object_to_save , file=file_obj)
+        try:
+            with open(file_path, 'wb') as file_obj:
+                pickle.dump(obj=object_to_save, file=file_obj)
 
-            logging.info("Exited the save_object method of the MainUtils class")
+            logging.info(
+                "Exited the save_object method of the MainUtils class")
 
         except Exception as e:
-            raise CustomException(e,sys)
+            raise CustomException(e, sys)
 
     @staticmethod
-    def load_obj(file_path: str) -> object :
+    def load_obj(file_path: str) -> object:
         logging.info(f"Loading obj from : {file_path}")
         try:
             with open(file=file_path, mode="rb") as file_obj:
-                return pickle.load(file=file_path)
+                return pickle.load(file=file_obj)
         except Exception as e:
-            logging.error("Exception occured in the load_object method of MainUtils")
+            logging.error(
+                "Exception occured in the load_object method of MainUtils")
             raise CustomException(e, sys)
-

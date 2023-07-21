@@ -21,10 +21,14 @@ from dataclasses import dataclass
 @dataclass
 class ModelTrainerConfig:
     articat_folder = os.path.join(ARTIFACT_FOLDER)
+    trained_model_dir_name = os.path.join(
+        articat_folder,
+        f"{MODEL_FILE_NAME}"
+    )
     trained_model_path = os.path.join(
-        articat_folder, 
+        trained_model_dir_name,
         f"{MODEL_FILE_NAME}{MODEL_FILE_EXTENSION}"
-        )
+    )
     expected_accuracy = 0.60
     model_config_file_path = os.path.join('config', 'model.yaml')
 
@@ -37,18 +41,18 @@ class ModelTrainer:
             'RandomForestClassifier': RandomForestClassifier(),
             'GradientBoostingClassifier': GradientBoostingClassifier(),
             'SVC': SVC(),
-            'LGBMClassifier': LGBMClassifier(),
+            # 'LGBMClassifier': LGBMClassifier(),
         }
 
     def evaluate_models(self, x_train: np.array, y_train: np.array, models: object) -> dict:
         try:
-            X_train, Y_train, X_test, Y_test = train_test_split(
+            X_train, X_test, Y_train, Y_test = train_test_split(
                 x_train,
                 y_train,
-                train_size=0.2,
+                test_size=0.1,
                 random_state=42
             )
-
+            print(Y_train)
             report = {}
             models_values = list(models.values())
             models_keys = list(models.keys())
@@ -62,9 +66,9 @@ class ModelTrainer:
 
                 # getting the score of the model
                 trained_model_score = accuracy_score(
-                    y_pred=y_train_pred, y_true=y_train)
+                    y_pred=y_train_pred, y_true=Y_train)
                 test_model_score = accuracy_score(
-                    y_pred=y_test_pred, y_true=y_test_pred)
+                    y_pred=y_test_pred, y_true=Y_test)
 
                 report[models_keys[i]] = test_model_score
 
@@ -114,12 +118,12 @@ class ModelTrainer:
             grid = GridSearchCV(
                 estimator=best_model_object,
                 param_grid=model_param_grid,
-                cv=10,
+                cv=5,
                 n_jobs=-1,
                 verbose=1
             )
 
-            grid.fit(x=x_train, y=y_train)
+            grid.fit(X=x_train, y=y_train)
 
             best_params = grid.best_params_
 
@@ -176,7 +180,7 @@ class ModelTrainer:
             )
 
             os.makedirs(
-                self.model_trainer_config.trained_model_path, exist_ok=True)
+                self.model_trainer_config.trained_model_dir_name, exist_ok=True)
 
             self.utils.save_object(
                 file_path=self.model_trainer_config.trained_model_path,
