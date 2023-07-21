@@ -23,7 +23,10 @@ class DataTransformationConfig :
     artifacts_dir : str = os.path.join(ARTIFACT_FOLDER)
     transformed_train_data_file = os.path.join(artifacts_dir, "train.npy")
     transformed_test_data_file = os.path.join(artifacts_dir, "test.npy")
-    transformed_object_file_path = os.path.join(artifacts_dir, "preprocessing.pkl")
+    transformed_object_file_path = os.path.join(
+        artifacts_dir,
+        f"{PREPROCESSOR_FILE_NAME}{PREPROCESSOR_FILE_EXTENSION}"
+        )
 
 
 class DataTransformation :

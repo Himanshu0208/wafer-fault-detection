@@ -21,9 +21,12 @@ from dataclasses import dataclass
 @dataclass
 class ModelTrainerConfig:
     articat_folder = os.path.join(ARTIFACT_FOLDER)
-    trained_model_path = os.path.join(articat_folder, "model.pkl")
+    trained_model_path = os.path.join(
+        articat_folder, 
+        f"{MODEL_FILE_NAME}{MODEL_FILE_EXTENSION}"
+        )
     expected_accuracy = 0.60
-    model_config_file_path = os.path.join('config', 'model.yml')
+    model_config_file_path = os.path.join('config', 'model.yaml')
 
 
 class ModelTrainer:
@@ -162,7 +165,7 @@ class ModelTrainer:
                 f"Best Model is : {best_model} , with score : {best_model_score}"
             )
 
-            if best_model_score < 0.6:
+            if best_model_score < self.model_trainer_config.expected_accuracy:
                 logging.error(
                     "The best model accuracy is less than the excepcted threshold i.e 0.6")
                 raise Exception(

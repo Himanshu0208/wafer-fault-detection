@@ -9,4 +9,9 @@ MONGO_URI = "mongodb+srv://himanshupandey1036:kHia1RHFwJIMMjDX@cluster0.z0nfsde.
 MODEL_FILE_NAME = "model"
 MODEL_FILE_EXTENSION = ".pkl"
 
+PREPROCESSOR_FILE_NAME = "preprocessor"
+PREPROCESSOR_FILE_EXTENSION = ".pkl"
+
 ARTIFACT_FOLDER = "artifact"
+
+PREDICTION_ARTIFACT_FOLDER = "prediction_artifacts"

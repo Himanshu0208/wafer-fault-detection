@@ -33,3 +33,14 @@ class MainUtils:
 
         except Exception as e:
             raise CustomException(e,sys)
+
+    @staticmethod
+    def load_obj(file_path: str) -> object :
+        logging.info(f"Loading obj from : {file_path}")
+        try:
+            with open(file=file_path, mode="rb") as file_obj:
+                return pickle.load(file=file_path)
+        except Exception as e:
+            logging.error("Exception occured in the load_object method of MainUtils")
+            raise CustomException(e, sys)
+
