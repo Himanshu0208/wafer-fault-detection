@@ -28,6 +28,7 @@ class PredictionPipelineConfig:
     )
     preprocessor_file_path = os.path.join(
         ARTIFACT_FOLDER,
+        f"{PREPROCESSOR_FILE_NAME}",
         f"{PREPROCESSOR_FILE_NAME}{PREPROCESSOR_FILE_EXTENSION}"
     )
     prediction_file_path = os.path.join(
