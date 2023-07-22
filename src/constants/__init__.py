@@ -4,7 +4,6 @@ MONGO_DB_NAME = "waferfault"
 MONGO_COLLECTION_NAME = "sensor_data"
 
 TARGET_COLUMN = "quality"
-MONGO_URI = "mongodb+srv://himanshupandey1036:kHia1RHFwJIMMjDX@cluster0.z0nfsde.mongodb.net/?retryWrites=true&w=majority"
 
 MODEL_FILE_NAME = "model"
 MODEL_FILE_EXTENSION = ".pkl"
@@ -15,3 +14,6 @@ PREPROCESSOR_FILE_EXTENSION = ".pkl"
 ARTIFACT_FOLDER = "artifact"
 
 PREDICTION_ARTIFACT_FOLDER = "prediction_artifacts"
+
+DATA_FILE_NAME = "wafer-data"
+DATA_FILE_EXTENSION = ".csv"
