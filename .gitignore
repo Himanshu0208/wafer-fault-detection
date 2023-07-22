@@ -1,3 +1,7 @@
+logs/
+artifact/
+prediction_artifacts/
+predictions/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -122,9 +126,5 @@ celerybeat.pid
 # Environments
 .env
 .venv
-env/
+env
 venv/
-
-artifact/
-prediction_artifacts/
-predictions/
