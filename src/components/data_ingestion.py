@@ -12,6 +12,8 @@ from src.logger import logging
 from src.utils.main_utils import MainUtils
 from dataclasses import dataclass
 
+from dotenv import load_dotenv
+load_dotenv()
 
 @dataclass
 class DataIngestionConfig:
@@ -35,7 +37,7 @@ class DataIngestion:
         """
 
         try:
-            client = MongoClient(MONGO_URI)
+            client = MongoClient(os.getenv('MONGO_URI'))
 
             collection = client[db_name][collection_name]
 
@@ -76,7 +78,7 @@ class DataIngestion:
                 f"Saving exported data to raw file path : {raw_file_path}")
             feature_store_file_path = os.path.join(
                 raw_file_path,
-                "wafer_data.csv"
+                f"{DATA_FILE_NAME}{DATA_FILE_EXTENSION}"
             )
 
             sensor_data.to_csv(feature_store_file_path, index=False)

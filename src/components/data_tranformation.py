@@ -23,9 +23,10 @@ from dataclasses import dataclass
 class DataTransformationConfig:
     artifacts_dir: str = os.path.join(ARTIFACT_FOLDER)
     transformed_test_data_dir = os.path.join(artifacts_dir, "test")
-    transformed_test_data_file = os.path.join(artifacts_dir, "test.csv")
+    transformed_test_data_file = os.path.join(transformed_test_data_dir, "test.csv")
+    transformed_object_dir = os.path.join(artifacts_dir, "preprocessor")
     transformed_object_file_path = os.path.join(
-        transformed_test_data_dir,
+        transformed_object_dir,
         f"{PREPROCESSOR_FILE_NAME}{PREPROCESSOR_FILE_EXTENSION}"
     )
 
@@ -35,6 +36,9 @@ class DataTransformation:
         self.utils = MainUtils()
         self.data_transformation_config = DataTransformationConfig()
         self.feature_store_file_path = feature_store_file_path
+
+        os.makedirs(self.data_transformation_config.transformed_object_dir, exist_ok=True)
+        os.makedirs(self.data_transformation_config.transformed_test_data_dir, exist_ok=True)
 
     # @staticmethod
     def get_data(self, feature_store_file_path: str) -> pd.DataFrame:
@@ -97,8 +101,7 @@ class DataTransformation:
                 X, y, test_size=0.2, random_state=42
             )
 
-            os.makedirs(
-                self.data_transformation_config.transformed_test_data_dir, exist_ok=True)
+            # Saving data for testing 
             df_test = pd.DataFrame(data=X_test, columns=list(X.columns))
             df_test.to_csv(
                 self.data_transformation_config.transformed_test_data_file
@@ -110,8 +113,6 @@ class DataTransformation:
             X_test_scaled = preprocessor.transform(X_test)
 
             preprocessor_path = self.data_transformation_config.transformed_object_file_path
-            os.makedirs(os.path.dirname(preprocessor_path), exist_ok=True)
-
             self.utils.save_object(
                 file_path=preprocessor_path,
                 object_to_save=preprocessor
