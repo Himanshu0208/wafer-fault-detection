@@ -52,7 +52,7 @@ class ModelTrainer:
                 test_size=0.1,
                 random_state=42
             )
-            print(Y_train)
+
             report = {}
             models_values = list(models.values())
             models_keys = list(models.keys())
@@ -120,7 +120,7 @@ class ModelTrainer:
                 param_grid=model_param_grid,
                 cv=5,
                 n_jobs=-1,
-                verbose=1
+                verbose=0
             )
 
             grid.fit(X=x_train, y=y_train)
