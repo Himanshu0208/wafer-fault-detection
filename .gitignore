@@ -124,3 +124,8 @@ celerybeat.pid
 .venv
 env/
 venv/
+
+logs/
+artifact/
+prediction_artifacts/
+predictions/
