@@ -5,10 +5,11 @@ import numpy as np
 from zipfile import Path
 from sklearn.model_selection import train_test_split
 
-from sklearn.preprocessing import RobustScaler, FunctionTransformer
-from sklearn.pipeline import Pipeline
+from imblearn.pipeline import Pipeline
+from imblearn.combine import SMOTETomek
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import RobustScaler, FunctionTransformer
 
 from typing import Tuple
 
@@ -23,7 +24,8 @@ from dataclasses import dataclass
 class DataTransformationConfig:
     artifacts_dir: str = os.path.join(ARTIFACT_FOLDER)
     transformed_test_data_dir = os.path.join(artifacts_dir, "test")
-    transformed_test_data_file = os.path.join(transformed_test_data_dir, "test.csv")
+    transformed_test_data_file = os.path.join(
+        transformed_test_data_dir, "test.csv")
     transformed_object_dir = os.path.join(artifacts_dir, "preprocessor")
     transformed_object_file_path = os.path.join(
         transformed_object_dir,
@@ -37,8 +39,10 @@ class DataTransformation:
         self.data_transformation_config = DataTransformationConfig()
         self.feature_store_file_path = feature_store_file_path
 
-        os.makedirs(self.data_transformation_config.transformed_object_dir, exist_ok=True)
-        os.makedirs(self.data_transformation_config.transformed_test_data_dir, exist_ok=True)
+        os.makedirs(
+            self.data_transformation_config.transformed_object_dir, exist_ok=True)
+        os.makedirs(
+            self.data_transformation_config.transformed_test_data_dir, exist_ok=True)
 
     # @staticmethod
     def get_data(self, feature_store_file_path: str) -> pd.DataFrame:
@@ -67,7 +71,8 @@ class DataTransformation:
             preprocessor = Pipeline(
                 steps=[
                     ('imputer', SimpleImputer(strategy="constant", fill_value=0)),
-                    ('scaler', RobustScaler())
+                    ('scaler', RobustScaler()),
+                    ('smt', SMOTETomek(sampling_strategy='auto')),
                 ]
             )
 
@@ -97,20 +102,21 @@ class DataTransformation:
             X = df.drop(columns=[TARGET_COLUMN])
             y = np.where(df[TARGET_COLUMN] == -1, 0, 1)  # replacing -1 to 0
 
+            preprocessor = self.get_data_transformer_object()
+            # X_res, y_res = preprocessor[-1].fit_resample(X,y)
             X_train, X_test, y_train, y_test = train_test_split(
                 X, y, test_size=0.2, random_state=42
             )
 
-            # Saving data for testing 
+            X_train_scaled,y_train = preprocessor.fit_resample(X_train, y_train)
+            X_test_scaled = preprocessor[:-1].transform(X_test)
+            
+            # Saving data for testing
             df_test = pd.DataFrame(data=X_test, columns=list(X.columns))
             df_test.to_csv(
                 self.data_transformation_config.transformed_test_data_file
-                )
-            
-            preprocessor = self.get_data_transformer_object()
+            )
 
-            X_train_scaled = preprocessor.fit_transform(X_train)
-            X_test_scaled = preprocessor.transform(X_test)
 
             preprocessor_path = self.data_transformation_config.transformed_object_file_path
             self.utils.save_object(

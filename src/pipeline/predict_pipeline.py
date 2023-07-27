@@ -77,11 +77,11 @@ class PredictionPipeline:
             model: object = self.utils.load_obj(
                 file_path=self.prediction_pipeline_config.model_file_path
             )
-            preprocessor: object = self.utils.load_obj(
+            preprocessor = self.utils.load_obj(
                 file_path=self.prediction_pipeline_config.preprocessor_file_path
             )
 
-            transformed_features = preprocessor.transform(features)
+            transformed_features = preprocessor[:-1].transform(features)
             y_pred = model.predict(transformed_features)
 
             return y_pred
